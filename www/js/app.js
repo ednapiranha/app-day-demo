@@ -20,9 +20,34 @@ define(function(require) {
             d.getFullYear();
     }
 
+    // Match a Youtube url pattern
+    var YOUTUBE = /(youtube.com(?:\/#)?\/watch\?)|(youtu\.be\/[A-Z0-9-_]+)/i;
+
+    function generateVideo(url) {
+        var youtubeId;
+
+        // If a url pattern is matched, return the iframe - otherwise, return the string
+        if (url.match(YOUTUBE)) {
+          url = url.split('/');
+
+          // Find the Youtube video id
+          if (url.indexOf('youtu.be') > -1) {
+            youtubeId = url[url.length - 1];
+          } else {
+            youtubeId = url[url.length - 1].split('v=')[1].split('&')[0];
+          }
+
+          url = '<div class="video-wrapper"><iframe width="560" height="349" ' +
+                'src="http://www.youtube.com/embed/' + youtubeId +
+                '?wmode=transparent" frameborder="0" allowfullscreen></iframe></div>'
+        }
+        return (url);
+    }
+
     // List view
 
     var list = $('.list').get(0);
+    /*
     list.add({ title: 'Learn this template',
                desc: 'This is a list-detail template. Learn more ' +
                      'about it at its ' +
@@ -34,6 +59,7 @@ define(function(require) {
     list.add({ title: 'Move stuff',
                desc: 'Move this over there',
                date: new Date(12, 10, 1) });
+    */
 
     $('button.refresh', list).click(function() {
         // Do nothing right now
@@ -42,12 +68,12 @@ define(function(require) {
     $('button.add', list).click(function() {
         edit.open(null, 'slideLeft');
     });
-    
+
     // Detail view
 
     var detail = $('.detail').get(0);
     detail.render = function(item) {
-        $('.title', this).html(item.get('title'));
+        $('.title', this).html(generateVideo(item.get('title')));
         $('.desc', this).html(item.get('desc'));
         $('.date', this).text(formatDate(item.get('date')));
     };
