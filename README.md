@@ -1,29 +1,115 @@
+# Playlist App!
 
-# A List/Detail Template for Open Web Apps
 
-This template comes with a new layouts library that lets you create apps quickly, and initial HTML and javascript that defines a list/detail application.
+## Setup Instructions
 
-It is part of the [mortar](https://github.com/mozilla/mortar/)
-template collection for building Open Web Apps.
+1. Create a Github account [http://github.com](http://github.com)
+2. Install a github client
 
-The layouts library is called [mortar-layouts](https://github.com/mozilla/mortar-layouts), and you can read more about it in the project page. It uses [backbone.js](http://backbonejs.org/) to provide a powerful yet minimal application UI framework.
+        http://windows.github.com/ (Windows)
+        http://mac.github.com/ (Mac)
 
-[Check out what the template is by default](http://mozilla.github.com/mortar-list-detail/).
+3. Create a new repository called 'playlist' in Github
+4. Clone the repository to your local machine
+1. Open Firefox
+2. Install the Firefox OS Simulator at [https://addons.mozilla.org/en-US/firefox/addon/firefox-os-simulator/](https://addons.mozilla.org/en-US/firefox/addon/firefox-os-simulator/)
+3. Install node at [http://nodejs.org](http://nodejs.org)
+4. Install volo
 
-# Usage
+        > npm install -g volo
 
-There are a few ways to get this template:
+5. Change into a project directory
 
-* git clone git://github.com/mozilla/mortar-list-detail.git myapp
-* volo create myapp mozilla/mortar-list-detail
+        > volo create playlist mozilla/mortar-list-detail
 
-If you have node installed, you can run a development server with volo:
+6. You'll get two prompts, just press enter for both
+7. Open the main html file in Firefox /path/to/your/playlist/www/index.html
+8. Run your code editor and open this playlist directory
 
-* cd myapp
-* volo serve
 
-View the list/detail app at http://localhost:8008/.
+## Coding the JavaScript part
 
-# Customizing
+1. Open playlist/js/app.js and on line 23 paste the following:
 
-You'll probably want to change how this template works to build your app. The meat of this template is in the [mortar-layouts](https://github.com/mozilla/mortar-layouts) library, which this uses to construct a UI powered by [backbone.js](http://backbonejs.org/). You should [read the documentation](https://github.com/mozilla/mortar-layouts#mortar-layouts) in the mortar-layouts project.
+        // Match a Youtube url pattern
+        var YOUTUBE = /(youtube.com(?:\/#)?\/watch\?)|(youtu\.be\/[A-Z0-9-_]+)/i;
+
+        function generateVideo(url) {
+            var youtubeId;
+
+            // If a url pattern is matched, return the iframe - otherwise, return the string
+            if (url.match(YOUTUBE)) {
+              url = url.split('/');
+
+              // Find the Youtube video id
+              if (url.indexOf('youtu.be') > -1) {
+                youtubeId = url[url.length - 1];
+              } else {
+                youtubeId = url[url.length - 1].split('v=')[1].split('&')[0];
+              }
+
+              url = '<div class="video-wrapper"><iframe width="560" height="349" ' +
+                    'src="http://www.youtube.com/embed/' + youtubeId +
+                    '?wmode=transparent" frameborder="0" allowfullscreen></iframe></div>'
+            }
+            return (url);
+        }
+
+2. Around line 49-50 of that same file, you will see three list.add calls. Delete them or comment them out.
+
+3. Do a search for detail.render and change this line:
+
+        $('.title', this).html(item.get('title'));
+
+        to
+
+        $('.title', this).html(generateVideo(item.get('title')));
+
+## Coding the CSS part
+
+1. Open playlist/www/css/app.css
+2. Change line 24 to this:
+
+        x-view .contents {
+            padding: 1em;
+            margin: 0 auto;
+            max-width: 560px;
+        }
+
+3. Add the following at the end of the file:
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            padding-top: 25px;
+            height: 0;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+## Update your manifest file
+
+1. Open playlist/www/manifest.webapp
+2. Change the name to whatever you want (I have it set to Playlist App), and change the developer information to your name.
+
+
+## Testing it out in the Firefox OS Simulator
+
+1. Load up the Firefox OS Simulator in Firefox by going to Tools -> Web Developer -> Firefox OS Simulator
+2. Click on 'Add Directory' and select playlist/www/manifest.webapp
+
+
+## Current Known Limitations
+
+Firefox is in the process of supporting h264 so the videos will only play in desktop Firefox if you have Flash installed (for the time being).
+
+## Additional Resources
+
+* [https://developer.mozilla.org/en-US/docs/Apps/App_templates](https://developer.mozilla.org/en-US/docs/Apps/App_templates)

@@ -39,7 +39,7 @@ define(function(require) {
 
           url = '<div class="video-wrapper"><iframe width="560" height="349" ' +
                 'src="http://www.youtube.com/embed/' + youtubeId +
-                '?wmode=transparent" frameborder="0" allowfullscreen></iframe></div>'
+                '?wmode=transparent&webm=1" frameborder="0" allowfullscreen></iframe></div>'
         }
         return (url);
     }
