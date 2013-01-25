@@ -108,7 +108,9 @@
 
 ## Current Known Limitations
 
-Firefox is in the process of supporting h264 so the videos will only play in desktop Firefox if you have Flash installed (for the time being).
+Firefox is in the process of supporting h264 so the videos will only play in desktop Firefox if you have Flash installed.
+
+Firefox Simulator will embed the video but not play it correctly for the time being.
 
 ## Additional Resources
 
