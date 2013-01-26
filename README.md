@@ -32,25 +32,16 @@
 1. Open playlist/js/app.js and on line 23 paste the following:
 
         // Match a Youtube url pattern
-        var YOUTUBE = /(youtube.com(?:\/#)?\/watch\?)|(youtu\.be\/[A-Z0-9-_]+)/i;
+        var YOUTUBE =/youtube\.com(?:\/#)?\/watch\?v=([A-Z0-9-_]+)|youtu\.be\/([A-Z0-9-_]+)/i; 
 
         function generateVideo(url) {
-            var youtubeId;
-
+            var youtubeMatch = url.match(YOUTUBE);
             // If a url pattern is matched, return the iframe - otherwise, return the string
-            if (url.match(YOUTUBE)) {
-              url = url.split('/');
-
-              // Find the Youtube video id
-              if (url.indexOf('youtu.be') > -1) {
-                youtubeId = url[url.length - 1];
-              } else {
-                youtubeId = url[url.length - 1].split('v=')[1].split('&')[0];
-              }
-
+            if (youtubeMatch) {
+              var youtubeId = youtubeMatch[1]?youtubeMatch[1]:youtubeMatch[2]; 
               url = '<div class="video-wrapper"><iframe width="560" height="349" ' +
                     'src="http://www.youtube.com/embed/' + youtubeId +
-                    '?wmode=transparent" frameborder="0" allowfullscreen></iframe></div>'
+                    '?wmode=transparent&webm=1" frameborder="0" allowfullscreen></iframe></div>'
             }
             return (url);
         }
