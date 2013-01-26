@@ -29,7 +29,7 @@
 
 ## Coding the JavaScript part
 
-1. Open playlist/js/app.js and on line 23 paste the following:
+1. Open playlist/www/js/app.js and on line 23 paste the following:
 
         // Match a Youtube url pattern
         var YOUTUBE = /(youtube.com(?:\/#)?\/watch\?)|(youtu\.be\/[A-Z0-9-_]+)/i;
